@@ -14,7 +14,7 @@ export const auth = (req: AuthRequest, res: Response, next: NextFunction) => {
     const decoded = verifyAccessToken(token);
     req.userId = decoded.id;
     next();
-  } catch {
+  } catch (_err) {
     return unauthorized(res);
   }
 };
