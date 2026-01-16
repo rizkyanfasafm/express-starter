@@ -63,12 +63,8 @@ export const conflict = (res: Response, message?: string) =>
 export const internalServerError = (res: Response, message?: string) =>
   error(res, { status: 500, message: message || 'Internal server error' });
 
-export const ok = <T>(
-  res: Response,
-  data?: T,
-  message?: string,
-  meta?: Record<string, unknown>
-) => success(res, { status: 200, message: message || 'OK', data, meta });
+export const ok = <T>(res: Response, data?: T, message?: string, meta?: Record<string, unknown>) =>
+  success(res, { status: 200, message: message || 'OK', data, meta });
 
 export const created = <T>(
   res: Response,

@@ -1,9 +1,9 @@
 import { prisma } from '@/db/prisma';
-import {hashPassword, verifyPassword} from '@/utils/password';
-import {LoginInput, RegisterInput} from '@/validations/auth.validation';
+import { hashPassword, verifyPassword } from '@/utils/password';
+import { LoginInput, RegisterInput } from '@/validations/auth.validation';
 import { UserService } from '@/services/user.service';
 import { BadRequest } from '@/errors/bad-request';
-import {User} from "../../generated/prisma/client";
+import { User } from '../../generated/prisma/client';
 
 export class AuthService {
   static async register(input: RegisterInput): Promise<User> {

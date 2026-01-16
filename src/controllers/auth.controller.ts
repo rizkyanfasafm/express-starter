@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import { AuthService } from '@/services/auth.service';
-import {badRequest, created, ok} from '@/utils/response';
-import {toUserResource} from "@/resources/user.resource";
-import {User} from "../../generated/prisma/client";
-import {signAccessToken, TokenPayload} from "@/utils/jwt";
+import { badRequest, created, ok } from '@/utils/response';
+import { toUserResource } from '@/resources/user.resource';
+import { User } from '../../generated/prisma/client';
+import { signAccessToken, TokenPayload } from '@/utils/jwt';
 
 export class AuthController {
   static async register(req: Request, res: Response) {
@@ -14,14 +14,14 @@ export class AuthController {
   static async login(req: Request, res: Response) {
     const user: User | null = await AuthService.login(req.body);
     console.log(user);
-    if(!user) {
+    if (!user) {
       return badRequest(res, 'Invalid email or password');
     }
 
-    const payload : TokenPayload = {
+    const payload: TokenPayload = {
       id: user.id,
       email: user.email,
-    }
+    };
 
     const accessToken = signAccessToken(payload);
 
