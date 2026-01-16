@@ -58,12 +58,18 @@ cp .env.example .env
 # Edit .env with your configuration
 ```
 
-4. Set up database
+4. Create database
+```sql
+CREATE DATABASE your_database_name;
+```
+
+5. Set up Prisma
 ```bash
+pnpm prisma generate
 pnpm prisma migrate dev
 ```
 
-5. Run development server
+6. Run development server
 ```bash
 pnpm dev
 ```
