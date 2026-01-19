@@ -13,7 +13,6 @@ export class AuthController {
 
   static async login(req: Request, res: Response) {
     const user: User | null = await AuthService.login(req.body);
-    console.log(user);
     if (!user) {
       return badRequest(res, 'Invalid email or password');
     }

@@ -19,7 +19,5 @@ export function errorHandler(err: unknown, _req: Request, res: Response, _next: 
 
   logger.error(err);
 
-  console.log(err);
-
   return internalServerError(res);
 }

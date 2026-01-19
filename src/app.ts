@@ -3,8 +3,6 @@ import helmet from 'helmet';
 import cors from 'cors';
 import { errorHandler } from '@/middlewares/error';
 import { routes } from '@/routes';
-import { ok } from '@/utils/response';
-import { signAccessToken, TokenPayload } from '@/utils/jwt';
 
 export function createApp() {
   const app = express();
@@ -18,17 +16,6 @@ export function createApp() {
   });
 
   app.use('/api', routes);
-
-  app.post('/test', (_req, res) => {
-    const payload: TokenPayload = {
-      id: 1,
-      email: 'rizky@anfasa.dev',
-    };
-
-    const token: string = signAccessToken(payload);
-
-    ok(res, { message: 'Test endpoint', token });
-  });
 
   app.use((_req, res) => {
     res.status(404).json({ success: false, message: 'Not Found' });
