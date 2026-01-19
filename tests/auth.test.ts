@@ -55,3 +55,44 @@ describe('POST /api/auth/register', () => {
     expect(res.body.success).toBe(false);
   });
 });
+
+describe('GET /api/auth/me', () => {
+  const app = createApp();
+  let accessToken: string;
+
+  beforeEach(async () => {
+    await prisma.user.deleteMany({ where: { email: 'me@test.com' } });
+    const user = await prisma.user.create({
+      data: { name: 'Me User', email: 'me@test.com', password: 'hashed' },
+    });
+    const { signAccessToken } = await import('@/utils/jwt');
+    accessToken = signAccessToken({ id: user.id, email: user.email });
+  });
+
+  afterAll(async () => {
+    await prisma.user.deleteMany({ where: { email: 'me@test.com' } });
+  });
+
+  it('should return current user', async () => {
+    const res = await request(app)
+      .get('/api/auth/me')
+      .set('Authorization', `Bearer ${accessToken}`);
+
+    expect(res.status).toBe(200);
+    expect(res.body.data.user.email).toBe('me@test.com');
+  });
+
+  it('should fail without token', async () => {
+    const res = await request(app).get('/api/auth/me');
+
+    expect(res.status).toBe(401);
+  });
+
+  it('should fail with invalid token', async () => {
+    const res = await request(app)
+      .get('/api/auth/me')
+      .set('Authorization', 'Bearer invalid-token');
+
+    expect(res.status).toBe(401);
+  });
+});
