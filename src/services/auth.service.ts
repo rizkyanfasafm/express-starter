@@ -2,14 +2,15 @@ import { prisma } from '@/db/prisma';
 import { hashPassword, verifyPassword } from '@/utils/password';
 import { LoginInput, RegisterInput } from '@/validations/auth.validation';
 import { UserService } from '@/services/user.service';
-import { BadRequest } from '@/errors/bad-request';
+import { AppError } from '@/errors/app-error';
+import { ERROR_CODES } from '@/constants/error-codes';
 import { User } from '../../generated/prisma/client';
 
 export class AuthService {
   static async register(input: RegisterInput): Promise<User> {
     const existing = await UserService.findUserByEmail(input.email);
     if (existing) {
-      throw new BadRequest('Email already in use');
+      throw new AppError(ERROR_CODES.CONFLICT);
     }
 
     return prisma.user.create({
