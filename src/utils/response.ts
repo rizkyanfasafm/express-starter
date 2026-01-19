@@ -9,6 +9,7 @@ export type ApiSuccess<T> = {
 
 export type ApiError<T> = {
   success: false;
+  code?: string;
   message: string;
   errors?: T;
 };
@@ -22,6 +23,7 @@ type SuccessOptions<T> = {
 
 type ErrorOptions<T> = {
   status: number;
+  code?: string;
   message: string;
   errors?: T;
 };
@@ -35,10 +37,11 @@ export function success<T>(
 
 export function error<T>(
   res: Response,
-  { status = 400, message, errors }: ErrorOptions<T>
+  { status = 400, code, message, errors }: ErrorOptions<T>
 ): Response<ApiError<T>> {
   return res.status(status).json({
     success: false,
+    ...(code && { code }),
     message,
     errors,
   });
