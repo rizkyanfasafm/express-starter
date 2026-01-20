@@ -1,6 +1,6 @@
 import { Response } from 'express';
 import { AuthService } from '@/services/auth.service';
-import { badRequest, created, ok, unauthorized } from '@/utils/response';
+import {badRequest, created, notFound, ok, unauthorized} from '@/utils/response';
 import { toUserResource } from '@/resources/user.resource';
 import { User } from '../../generated/prisma/client';
 import { signAccessToken, signRefreshToken, TokenPayload, verifyRefreshToken } from '@/utils/jwt';
@@ -73,6 +73,7 @@ export class AuthController {
 
   static async me(req: AuthRequest, res: Response) {
     const user = await UserService.findUserById(req.userId!);
-    return ok(res, { user: user ? toUserResource(user) : null });
+    if (!user) return notFound(res, 'User not found');
+    return ok(res, { user: toUserResource(user) });
   }
 }

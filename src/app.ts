@@ -6,6 +6,7 @@ import { errorHandler } from '@/middlewares/error';
 import { routes } from '@/routes';
 import { logger } from '@/utils/logger';
 import { env } from '@/env';
+import {notFound} from "@/utils/response";
 
 export function createApp() {
   const app = express();
@@ -26,7 +27,7 @@ export function createApp() {
   app.use('/api', routes);
 
   app.use((_req, res) => {
-    res.status(404).json({ success: false, message: 'Not Found' });
+    notFound(res)
   });
 
   app.use(errorHandler);
